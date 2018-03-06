@@ -10,7 +10,7 @@ import om.Voyance;
 
 /**
  *
- * @author bdurand
+ * @author bdurand 
  */
 public class VoyanceDAO {
     public static void persist(Voyance v){

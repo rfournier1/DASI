@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 
 /**
  *
- * @author bdurand
+ * @author bdurand 
  */
 @Entity
 public class Astrologue extends Medium{

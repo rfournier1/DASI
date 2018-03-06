@@ -70,7 +70,7 @@ public abstract class Medium implements Serializable {
     }
 
     public void setPrenom(String prenom) {
-        this.prenom = prenom;
+         this.prenom = prenom;
     }
     
     @Override

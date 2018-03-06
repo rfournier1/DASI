@@ -12,8 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- *
- * @author bdurand
+ * 
+ * @author bdurand 
  */
 @Entity
 public class Employe implements Serializable {

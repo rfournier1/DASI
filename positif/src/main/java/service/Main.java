@@ -11,6 +11,7 @@ import dao.jpaUtil;
 import om.Employe;
 import om.Voyant;
 import dao.MediumDAO;
+import java.text.ParseException;
 import java.util.Date;
 import om.Client;
 
@@ -26,7 +27,6 @@ public class Main {
     public static void main(String[] args) {
         jpaUtil.init();
         jpaUtil.creerEntityManager();
-        
         Employe e1 = new Employe("José","Bové");
         Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
         jpaUtil.ouvrirTransaction();
@@ -35,7 +35,8 @@ public class Main {
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
     }
-    public void InscriptionClient(Client.Civilite civilite, String nom, String prenom, Date date, String email, String adresse, String tel, String identifiant, String mdp){
+    
+    public void InscriptionClient(Client.Civilite civilite, String nom, String prenom, String date, String email, String adresse, String tel, String identifiant, String mdp) throws ParseException{
         Client c = new Client(civilite, nom, prenom, date, email, adresse, tel, identifiant, mdp);
         jpaUtil.ouvrirTransaction();
         ClientDAO.persist(c);

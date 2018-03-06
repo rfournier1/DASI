@@ -6,11 +6,15 @@
 package om;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import static javax.persistence.TemporalType.DATE;
 
 
 /**
@@ -32,6 +36,8 @@ public class Client implements Serializable {
     private Civilite civilite;
     private String nom;
     private String prenom;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    @Temporal(DATE)
     private Date date;
     private String email;
     private String adresse;
@@ -41,13 +47,13 @@ public class Client implements Serializable {
     private String couleur;
     private String animalTotem;
 
-    public Client(Civilite civilite, String nom, String prenom, Date date, String email, String adresse, String tel, String identifiant, String mdp) {
+    public Client(Civilite civilite, String nom, String prenom, String date, String email, String adresse, String tel, String identifiant, String mdp) throws ParseException {
         this.identifiant = identifiant;
         this.mdp = mdp;
         this.civilite = civilite;
         this.nom = nom;
         this.prenom = prenom;
-        this.date = date;
+        this.date = sdf.parse(date);
         this.email = email;
         this.adresse = adresse;
         this.tel = tel;

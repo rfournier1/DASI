@@ -10,7 +10,7 @@ import om.Client;
 /**
  *
  * @author bdurand
- */
+ */ 
 public class ClientDAO {
     
     public static void persist(Client c){

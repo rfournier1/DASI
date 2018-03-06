@@ -31,7 +31,7 @@ public class jpaUtil {
      * (cf.&nbsp;persistence.xml)</strong>
      */
     private static EntityManagerFactory entityManagerFactory = null;
-    /**
+    /** 
      * Gère les instances courantes de Entity Manager liées aux Threads.
      * L'utilisation de ThreadLocal garantie une unique instance courante par
      * Thread.

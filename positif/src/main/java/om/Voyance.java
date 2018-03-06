@@ -5,11 +5,15 @@
  */
 package om;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import static javax.persistence.TemporalType.DATE;
 
 /**
  *
@@ -27,7 +31,10 @@ public class Voyance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    @Temporal(DATE)
     private Date debut;
+    @Temporal(DATE)
     private Date fin;
     private String com;
     private Status status;
@@ -35,8 +42,7 @@ public class Voyance {
     public Voyance() {
         this.status = Status.EnAttente;
     }
-
-    
+  
     
     public Status getStatus() {
         return status;
@@ -50,16 +56,17 @@ public class Voyance {
         return debut;
     }
 
-    public void setDebut(Date debut) {
-        this.debut = debut;
+    public void setDebut(String date) throws ParseException{
+        this.debut = sdf.parse(date);
+                
     }
-
+    
     public Date getFin() {
         return fin;
     }
 
-    public void setFin(Date fin) {
-        this.fin = fin;
+    public void setFin(String date) throws ParseException {
+        this.fin=sdf.parse(date);
     }
 
     public String getCom() {

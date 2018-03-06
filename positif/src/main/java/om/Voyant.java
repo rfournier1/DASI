@@ -21,7 +21,7 @@ public class Voyant extends Medium{
         private String nom;
         
         Support(String nom){
-            this.nom = nom;
+             this.nom = nom;
         }
         
         @Override
