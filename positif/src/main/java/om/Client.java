@@ -9,12 +9,14 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.DATE;
+import javax.persistence.Transient;
 
 
 /**
@@ -23,7 +25,7 @@ import static javax.persistence.TemporalType.DATE;
  */
 @Entity
 public class Client implements Serializable {
-    
+    //public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public enum Civilite{
         Mr,
         Mme;
@@ -31,14 +33,17 @@ public class Client implements Serializable {
 //    
 //    private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(unique=true)
     private String identifiant;
     private String mdp;
     private Civilite civilite;
     private String nom;
     private String prenom;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     @Temporal(DATE)
     private Date date;
+    @Column(unique=true)
     private String email;
     private String adresse;
     private String tel;
@@ -47,13 +52,13 @@ public class Client implements Serializable {
     private String couleur;
     private String animalTotem;
 
-    public Client(Civilite civilite, String nom, String prenom, String date, String email, String adresse, String tel, String identifiant, String mdp) throws ParseException {
+    public Client(Civilite civilite, String nom, String prenom, Date date, String email, String adresse, String tel, String identifiant, String mdp){
         this.identifiant = identifiant;
         this.mdp = mdp;
         this.civilite = civilite;
         this.nom = nom;
         this.prenom = prenom;
-        this.date = sdf.parse(date);
+        this.date = date;
         this.email = email;
         this.adresse = adresse;
         this.tel = tel;
@@ -122,5 +127,10 @@ public class Client implements Serializable {
         return animalTotem;
     }
 
+    @Override
+    public String toString() {
+        return "Client{" + "id=" + id + ", identifiant=" + identifiant + ", mdp=" + mdp + ", civilite=" + civilite + ", nom=" + nom + ", prenom=" + prenom + ", date=" + date + ", email=" + email + ", adresse=" + adresse + ", tel=" + tel + ", zodiac=" + zodiac + ", signeChinois=" + signeChinois + ", couleur=" + couleur + ", animalTotem=" + animalTotem + '}';
+    }
+    
     
 }

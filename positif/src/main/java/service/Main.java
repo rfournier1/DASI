@@ -12,7 +12,10 @@ import om.Employe;
 import om.Voyant;
 import dao.MediumDAO;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.Query;
 import om.Client;
 
 /**
@@ -34,21 +37,40 @@ public class Main {
         MediumDAO.persist(v1);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = new Date();
+        try{
+            d = sdf.parse("21/12/2012");
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        
+        Client c = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
+        
+        //InscriptionClient(c);
+        Client john = Identification("Jo", "password");
+        
+        System.out.println(john);
+        
     }
     
-    public void InscriptionClient(Client.Civilite civilite, String nom, String prenom, String date, String email, String adresse, String tel, String identifiant, String mdp) throws ParseException{
-        Client c = new Client(civilite, nom, prenom, date, email, adresse, tel, identifiant, mdp);
+    public static void InscriptionClient(Client c){
+        jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
         ClientDAO.persist(c);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();        
     }
     
-    public Client Identification(String identifiant, String mdp){
-        Client c = ClientDAO.find(identifiant);
-        if(c !=null){
-            if(mdp.equals(c.getMdp())){
-                return c;
+    public static Client IdentificationClient(String identifiant, String mdp){
+        jpaUtil.creerEntityManager();
+        List<Client> list = ClientDAO.getClientByIdentifiant(identifiant);
+        jpaUtil.fermerEntityManager();
+        System.out.println(list);
+        if(!list.isEmpty()){
+            if(list.get(0).getMdp() == mdp){
+                return list.get(0);
             }
         }
         return null;
