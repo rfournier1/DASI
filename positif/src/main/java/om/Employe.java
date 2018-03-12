@@ -6,6 +6,7 @@
 package om;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,11 +25,16 @@ public class Employe implements Serializable {
     private Long id;
     private String nom;
     private String prenom;
+    @Column(unique=true)
+    private String identifiant;
+    private String mdp;
     private boolean status;
 
-    public Employe(String nom, String prenom) {
+    public Employe(String nom, String prenom, String identifiant, String mdp) {
         this.nom = nom;
         this.prenom = prenom;
+        this.identifiant = identifiant;
+        this.mdp = mdp;
         status = true;
     }
 
@@ -38,6 +44,13 @@ public class Employe implements Serializable {
         status=true;
     }
     
+    public String getIdentifiant() {
+        return identifiant;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
     
     public boolean getStatus() {
         return status;

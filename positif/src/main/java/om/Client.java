@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,17 +63,16 @@ public class Client implements Serializable {
         this.email = email;
         this.adresse = adresse;
         this.tel = tel;
-        this.calculerProfilAstro();
     }
 
     public Client() {
     }
     
-    private void calculerProfilAstro(){
-        this.zodiac="Scorpion";
-        this.couleur="bleu";
-        this.signeChinois="Rat";
-        this.animalTotem="panda";
+    public void setProfilAstro(List<String> profil){
+        this.zodiac=profil.get(0);
+        this.signeChinois=profil.get(1);
+        this.couleur=profil.get(2);
+        this.animalTotem=profil.get(3);
     }
 
     public String getIdentifiant() {
