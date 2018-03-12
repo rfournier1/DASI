@@ -15,9 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Query;
 import om.Client;
 import om.Voyance;
+import dao.VoyanceDAO;
+import om.Medium;
 
 /**
  *
@@ -29,15 +30,23 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         jpaUtil.init();
+        Initialisation();
         jpaUtil.creerEntityManager();
-        Employe e1 = new Employe("José","Bové");
-        Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
-        jpaUtil.ouvrirTransaction();
-        EmployeDAO.persist(e1);    
-        MediumDAO.persist(v1);
-        jpaUtil.validerTransaction();
+        Client c = ClientDAO.find(new Long(3));
+        Medium v = MediumDAO.find(new Long(2), Medium.Talent.Voyant);
+        Employe e = EmployeDAO.find(new Long(1));
         jpaUtil.fermerEntityManager();
+        System.out.println(v);
+        System.out.println(c);
+        System.out.println(e);
+        jpaUtil.creerEntityManager();
+        List<Voyance> list = ClientDAO.getHistoriqueByClient(c);
+        jpaUtil.fermerEntityManager();
+        System.out.println(list);
+    }
+    public static void Initialisation(){
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date d = new Date();
@@ -47,15 +56,26 @@ public class Main {
             e.printStackTrace();
         }
         
-        Client c = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
+        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
         
-        //InscriptionClient(c);
-        Client john = IdentificationClient("Jo", "password");
+        Employe e1 = new Employe("José","Bové");
         
-        System.out.println(john);
+        Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
         
+        jpaUtil.creerEntityManager();
+        jpaUtil.ouvrirTransaction();
+        EmployeDAO.persist(e1);    
+        MediumDAO.persist(v1);
+        ClientDAO.persist(c1);
+        jpaUtil.validerTransaction();
+        jpaUtil.fermerEntityManager();
+        Voyance ve1=new Voyance(c1,e1,v1);
+        jpaUtil.creerEntityManager();
+        jpaUtil.ouvrirTransaction();
+        VoyanceDAO.persist(ve1);
+        jpaUtil.validerTransaction();
+        jpaUtil.fermerEntityManager();
     }
-    
     public static void InscriptionClient(Client c){
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
@@ -78,7 +98,10 @@ public class Main {
     }
     
     public static void getHistorique(Client c){
-        
+        jpaUtil.creerEntityManager();
+        List<Voyance> list = ClientDAO.getHistoriqueByClient(c.getId());    
+        jpaUtil.fermerEntityManager();
+        System.out.println(list);
     }
     
     public static void rechercheMedium(){

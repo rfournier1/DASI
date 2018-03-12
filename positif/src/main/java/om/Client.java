@@ -6,8 +6,6 @@
 package om;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -66,6 +64,10 @@ public class Client implements Serializable {
     }
 
     public Client() {
+    }
+
+    public Long getId() {
+        return id;
     }
     
     private void calculerProfilAstro(){

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import om.Client;
+import om.Voyance;
 
 /**
  *
@@ -30,16 +31,22 @@ public class ClientDAO {
         em.remove(c);
     }
     
-    public static Client find(String id){
+    public static Client find(Long id){
         EntityManager em = jpaUtil.obtenirEntityManager();
-        return em.find(Client.class, id);
-        
+        return em.find(Client.class, id);        
     }
     
     public static List<Client> getClientByIdentifiant(String id){
         EntityManager em = jpaUtil.obtenirEntityManager();
         Query query = em.createQuery("Select c from Client c where c.identifiant = :id"); 
         query.setParameter("id", id);
+        return query.getResultList();
+    }
+    
+    public static List<Voyance> getHistoriqueByClient(Client c){
+        EntityManager em = jpaUtil.obtenirEntityManager();
+        Query query = em.createQuery("Select v from Voyance v where v.client = :id"); 
+        query.setParameter("id", c);
         return query.getResultList();
     }
 }

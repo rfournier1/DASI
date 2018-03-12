@@ -5,8 +5,10 @@
  */
 package om;
 
+import dao.jpaUtil;
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -71,7 +73,7 @@ public abstract class Medium implements Serializable {
 
     public void setPrenom(String prenom) {
          this.prenom = prenom;
-    }
+    }        
     
     @Override
     public int hashCode() {

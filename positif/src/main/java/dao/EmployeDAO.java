@@ -28,4 +28,8 @@ public class EmployeDAO{
         EntityManager em = jpaUtil.obtenirEntityManager();
         em.remove(emp);
     }
+    public static Employe find(Long id){
+        EntityManager em = jpaUtil.obtenirEntityManager();
+        return em.find(Employe.class, id);
+    }        
 }

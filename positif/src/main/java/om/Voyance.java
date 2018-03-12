@@ -5,13 +5,13 @@
  */
 package om;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.DATE;
 
@@ -31,18 +31,43 @@ public class Voyance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     @Temporal(DATE)
     private Date debut;
     @Temporal(DATE)
     private Date fin;
     private String com;
     private Status status;
+    @ManyToOne
+    @JoinColumn(name = "ClientId")
+    private Client client;
+    @ManyToOne
+    @JoinColumn(name = "MediumId")
+    private Medium medium;
+    @ManyToOne
+    @JoinColumn(name = "EmployeId")
+    private Employe employe;
 
-    public Voyance() {
+    public Voyance(Client c, Employe e, Medium m) {
         this.status = Status.EnAttente;
+        this.client=c;
+        this.medium=m;
+        this.employe=e;
     }
-  
+    public Voyance(){
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public Medium getMedium() {
+        return medium;
+    }
+
+    public Employe getEmploye() {
+        return employe;
+    }
+    
     
     public Status getStatus() {
         return status;
@@ -56,8 +81,8 @@ public class Voyance {
         return debut;
     }
 
-    public void setDebut(String date) throws ParseException{
-        this.debut = sdf.parse(date);
+    public void setDebut(Date date){
+        this.debut = date;
                 
     }
     
@@ -65,8 +90,8 @@ public class Voyance {
         return fin;
     }
 
-    public void setFin(String date) throws ParseException {
-        this.fin=sdf.parse(date);
+    public void setFin(Date date){
+        this.fin=date;
     }
 
     public String getCom() {
@@ -83,7 +108,7 @@ public class Voyance {
 
     public void setId(Long id) {
         this.id = id;
-    }
+    }    
 
     @Override
     public int hashCode() {
