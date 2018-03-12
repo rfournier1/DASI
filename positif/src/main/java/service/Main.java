@@ -49,7 +49,7 @@ public class Main {
         Client c = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
         
         //InscriptionClient(c);
-        Client john = Identification("Jo", "password");
+        Client john = IdentificationClient("Jo", "password");
         
         System.out.println(john);
         
