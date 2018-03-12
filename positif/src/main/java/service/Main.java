@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 import om.Client;
+import om.Voyance;
 
 /**
  *
@@ -49,7 +50,7 @@ public class Main {
         Client c = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
         
         //InscriptionClient(c);
-        Client john = Identification("Jo", "password");
+        Client john = IdentificationClient("Jo", "password");
         
         System.out.println(john);
         
@@ -74,5 +75,29 @@ public class Main {
             }
         }
         return null;
+    }
+    
+    public static void getHistorique(Client c){
+        
+    }
+    
+    public static void rechercheMedium(){
+        
+    }
+    
+    public static void demanderVoyance(Client c){
+        
+    }
+    
+    public static void getVoyance(Employe e){
+        
+    }
+    
+    public static void trouverClientParVoyance(Voyance v){
+        
+    }
+    
+    public static void getStats(Employe e){
+        
     }
 }
