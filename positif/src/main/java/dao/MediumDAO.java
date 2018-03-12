@@ -31,6 +31,7 @@ public class MediumDAO {
         EntityManager em = jpaUtil.obtenirEntityManager();
         em.remove(m);
     }
+
     public static Medium find(Long id, Medium.Talent t){
         EntityManager em = jpaUtil.obtenirEntityManager();
         if(t.equals(Medium.Talent.Voyant)){
@@ -42,4 +43,12 @@ public class MediumDAO {
         }
         return null;
     }
-}
+
+    
+//    public static List<Medium> getMediumByTalent(Medium.Talent talent){
+//        EntityManager em = jpaUtil.obtenirEntityManager();
+//        Query query = em.createQuery("Select m from Client c where c.identifiant = :id"); 
+//        query.setParameter("id", id);
+//        return query.getResultList();
+//    }
+//}

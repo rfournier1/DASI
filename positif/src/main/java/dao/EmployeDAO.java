@@ -5,7 +5,9 @@
  */
 package dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import om.Employe;
 
 /**
@@ -32,4 +34,11 @@ public class EmployeDAO{
         EntityManager em = jpaUtil.obtenirEntityManager();
         return em.find(Employe.class, id);
     }        
+
+    public static List<Employe> getEmployeByIdentifiant(String id){
+        EntityManager em = jpaUtil.obtenirEntityManager();
+        Query query = em.createQuery("Select e from Employe e where e.identifiant = :id"); 
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 }
