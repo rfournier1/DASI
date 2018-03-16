@@ -5,7 +5,10 @@
  */
 package dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import om.Employe;
 import om.Voyance;
 
 /**
@@ -13,6 +16,7 @@ import om.Voyance;
  * @author bdurand 
  */
 public class VoyanceDAO {
+    
     public static void persist(Voyance v){
         EntityManager em = jpaUtil.obtenirEntityManager();
         em.persist(v);
@@ -26,5 +30,12 @@ public class VoyanceDAO {
     public static void delete(Voyance v){
         EntityManager em = jpaUtil.obtenirEntityManager();
         em.remove(v);
+    }
+    
+    public static List<Voyance> getVoyancesByEmploye(Employe e){
+        EntityManager em = jpaUtil.obtenirEntityManager();
+        Query query = em.createQuery("Select v from Voyance v where v.employe = :emp");
+        query.setParameter("emp", e);
+        return query.getResultList();
     }
 }

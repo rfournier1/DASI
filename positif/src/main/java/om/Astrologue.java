@@ -26,4 +26,7 @@ public class Astrologue extends Medium{
     public Astrologue() {
     }
     
+    public Voyant.Support getSupport() {
+        return null;
+    }
 }

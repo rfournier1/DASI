@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import om.Voyant.Support;
 
 /**
  *
@@ -94,10 +95,13 @@ public abstract class Medium implements Serializable {
         }
         return true;
     }
-
+    
+    public abstract Support getSupport();
+    
     @Override
     public String toString() {
-        return "om.Medium[ id=" + id + " ]";
+        return "Medium{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", talent=" + talent + ", bio=" + bio + '}';
     }
+    
     
 }

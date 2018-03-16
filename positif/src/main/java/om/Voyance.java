@@ -27,7 +27,7 @@ public class Voyance {
        EnAttente,
        Termine;
    } 
-    private static final long serialVersionUID = 1L;
+   
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -119,7 +119,8 @@ public class Voyance {
 
     @Override
     public String toString() {
-        return "OM.Voyance[ id=" + id + " ]";
+        return "Voyance{" + "id=" + id + ", debut=" + debut + ", fin=" + fin + ", com=" + com + ", status=" + status + ", client=" + client + ", medium=" + medium + ", employe=" + employe + '}';
     }
+
     
 }

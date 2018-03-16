@@ -29,6 +29,7 @@ public class Tarologue extends Medium{
             return nom;
         }
     }
+    
     Cartes cartes;
     
     public Tarologue(String nom, String prenom, Cartes cartes, String bio){
@@ -39,4 +40,7 @@ public class Tarologue extends Medium{
     public Tarologue() {
     }
     
+    public Voyant.Support getSupport() {
+        return null;
+    }
 }

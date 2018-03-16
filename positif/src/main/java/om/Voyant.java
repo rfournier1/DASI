@@ -29,6 +29,7 @@ public class Voyant extends Medium{
             return nom;
         }
     }
+    
     Support support;
     
     public Voyant(String nom, String prenom, Support support,String bio){
@@ -37,6 +38,16 @@ public class Voyant extends Medium{
     }
 
     public Voyant() {
+    }
+
+    public Support getSupport() {
+        return support;
+    }
+    
+    @Override
+    public String toString() {
+        //return "Voyant{" + "support=" + support + '}';
+        return super.toString()+"Voyant{" + "support=" + support + '}';
     }
     
 }

@@ -90,7 +90,8 @@ public class Employe implements Serializable {
 
     @Override
     public String toString() {
-        return "OM.Employe[ id=" + id + " ]";
+        return "Employe{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", identifiant=" + identifiant + ", mdp=" + mdp + ", status=" + status + '}';
     }
+    
     
 }
