@@ -7,6 +7,8 @@ package om;
 
 import dao.jpaUtil;
 import java.io.Serializable;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,9 @@ import om.Voyant.Support;
  * @author bdurand
  */
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="TYPE_ENTITE")
+@DiscriminatorValue("MEDIUM")
 
 public abstract class Medium implements Serializable {
 

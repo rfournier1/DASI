@@ -5,6 +5,7 @@
  */
 package om;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
  * @author bdurand 
  */
 @Entity
+@DiscriminatorValue("TAROLOGUE")
 public class Tarologue extends Medium{
    
     public enum Cartes{

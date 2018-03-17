@@ -27,7 +27,8 @@ public class Voyance {
        EnCours,
        EnAttente,
        Termine;
-   } 
+   }
+   
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -52,6 +53,7 @@ public class Voyance {
         this.client=c;
         this.medium=m;
         this.employe=e;
+        
     }
     public Voyance(){
     }

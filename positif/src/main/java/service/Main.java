@@ -70,7 +70,9 @@ public class Main {
         System.out.println(voy1);
         jpaUtil.fermerEntityManager();
         jpaUtil.creerEntityManager();
+        jpaUtil.ouvrirTransaction();
         VoyanceDAO.persist(voy1);
+        jpaUtil.validerTransaction();
       //  Voyance voy = getVoyance(e);
      //   System.out.println(voy);
 //        List<Voyance> list = ClientDAO.getHistoriqueByClient(c);
@@ -85,14 +87,24 @@ public class Main {
         Voyant v2 = new Voyant("Michelle","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
         
         Employe e1 = new Employe();
-        
-        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = new Date();
+        try{
+            d = sdf.parse("21/12/2012");
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        Client cl = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
+        System.out.println(e1);
+        System.out.println(v1);
+        System.out.println(v2);
         
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
         EmployeDAO.persist(e1);    
         MediumDAO.persist(v1);
         MediumDAO.persist(v2);
+        ClientDAO.persist(cl);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
     }
