@@ -68,9 +68,11 @@ public class Main {
         System.out.println(e);
         Voyance voy1 = new Voyance(c,e,v);
         System.out.println(voy1);
+        jpaUtil.fermerEntityManager();
+        jpaUtil.creerEntityManager();
         VoyanceDAO.persist(voy1);
-        Voyance voy = getVoyance(e);
-        System.out.println(voy);
+      //  Voyance voy = getVoyance(e);
+     //   System.out.println(voy);
 //        List<Voyance> list = ClientDAO.getHistoriqueByClient(c);
 //        System.out.println(list);
         jpaUtil.fermerEntityManager();

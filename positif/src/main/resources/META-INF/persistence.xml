@@ -10,10 +10,10 @@
     <class>om.Tarologue</class>
     <class>om.Astrologue</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/positifDB"/>
-      <property name="javax.persistence.jdbc.user" value="positifDB"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/DB"/>
+      <property name="javax.persistence.jdbc.user" value="B3232"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.password" value="positifDB"/>
+      <property name="javax.persistence.jdbc.password" value="B3232"/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>

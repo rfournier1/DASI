@@ -27,7 +27,6 @@ public class Voyance {
        EnAttente,
        Termine;
    } 
-   
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -37,35 +36,29 @@ public class Voyance {
     private Date fin;
     private String com;
     private Status status;
-    @ManyToOne
-    @JoinColumn(name = "ClientId")
-    private Client client;
-    @ManyToOne
-    @JoinColumn(name = "MediumId")
-    private Medium medium;
-    @ManyToOne
-    @JoinColumn(name = "EmployeId")
-    private Employe employe;
+    private Long clientid;
+    private Long mediumid;
+    private Long employeid;
 
     public Voyance(Client c, Employe e, Medium m) {
         this.status = Status.EnAttente;
-        this.client=c;
-        this.medium=m;
-        this.employe=e;
+        this.clientid=c.getId();
+        this.mediumid=m.getId();
+        this.employeid=e.getId();
     }
     public Voyance(){
     }
 
-    public Client getClient() {
-        return client;
+    public Long getClient() {
+        return clientid;
     }
 
-    public Medium getMedium() {
-        return medium;
+    public Long getMedium() {
+        return mediumid;
     }
 
-    public Employe getEmploye() {
-        return employe;
+    public Long getEmploye() {
+        return employeid;
     }
     
     
@@ -119,7 +112,7 @@ public class Voyance {
 
     @Override
     public String toString() {
-        return "Voyance{" + "id=" + id + ", debut=" + debut + ", fin=" + fin + ", com=" + com + ", status=" + status + ", client=" + client + ", medium=" + medium + ", employe=" + employe + '}';
+        return "Voyance{" + "id=" + id + ", debut=" + debut + ", fin=" + fin + ", com=" + com + ", status=" + status + ", client=" + clientid + ", medium=" + mediumid + ", employe=" + employeid + '}';
     }
 
     
