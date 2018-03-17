@@ -42,27 +42,24 @@ public class Main {
         jpaUtil.init();
         Initialisation();
         
-
-//        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
-//        
-//        try {
-//            System.out.println(InscriptionClient(c1));
-//        }catch(IOException ex){
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         jpaUtil.creerEntityManager();
-        jpaUtil.ouvrirTransaction();
         Employe e = EmployeDAO.find(new Long(1));
+        Client c = ClientDAO.getClientByIdentifiant("Jo");
         System.out.println("emp e : "+e);
+        jpaUtil.fermerEntityManager();
+        
         List<Voyance> voy = getVoyance(e);
         System.out.println("voyance voy : " + voy);
-        jpaUtil.validerTransaction();
-        jpaUtil.fermerEntityManager();
-//        List<Voyance> list = ClientDAO.getHistoriqueByClient(c);
-//        System.out.println(list);
-//        ArrayList<Medium.Talent> l = new ArrayList<>();
-//        l.add(Medium.Talent.Voyant);
-//        System.out.println(rechercheMediums(l));
+        
+        List<Voyance> list = getHistorique(c);
+        System.out.println(list);
+        ArrayList<Medium.Talent> l = new ArrayList<>();
+        l.add(Medium.Talent.Voyant);
+        List<Medium> listM = rechercheMediums(l);
+        System.out.println(listM);
+        demanderVoyance(c, listM.get(0));
+        accepterVoyance(list.get(0));
+        System.out.println(getHistorique(c));
     }
     public static void Initialisation(){
         Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
@@ -76,25 +73,25 @@ public class Main {
         }catch(ParseException e){
             e.printStackTrace();
         }
-        Client cl = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
+        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
         
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
         EmployeDAO.persist(e1);    
         MediumDAO.persist(v1);
         MediumDAO.persist(v2);
-        ClientDAO.persist(cl);
+        ClientDAO.persist(c1);
         jpaUtil.validerTransaction();
         jpaUtil.ouvrirTransaction();
-        Client c = ClientDAO.find(new Long(4));
-        Medium v = MediumDAO.find(new Long(2), Medium.Talent.Voyant);
-        Employe e = EmployeDAO.find(new Long(1));
-        System.out.println(v);
-        System.out.println(c);
-        System.out.println(e);
-        Voyance voy1 = new Voyance(c,e,v);
-        System.out.println(voy1);
+//        Client c = ClientDAO.find(new Long(4));
+//        Medium v = MediumDAO.find(new Long(2), Medium.Talent.Voyant);
+//        Employe e = EmployeDAO.find(new Long(1));
+//        System.out.println(v);
+//        System.out.println(c);
+//        System.out.println(e);
+        Voyance voy1 = new Voyance(c1,v1);
         VoyanceDAO.persist(voy1);
+        voy1.assignEmploye(e1);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
     }
@@ -117,12 +114,11 @@ public class Main {
     
     public static Client IdentificationClient(String identifiant, String mdp){
         jpaUtil.creerEntityManager();
-        List<Client> list = ClientDAO.getClientByIdentifiant(identifiant);
+        Client c = ClientDAO.getClientByIdentifiant(identifiant);
         jpaUtil.fermerEntityManager();
-        System.out.println(list);
-        if(!list.isEmpty()){
-            if(list.get(0).getMdp() == mdp){
-                return list.get(0);
+        if(c != null){
+            if(c.getMdp() == mdp){
+                return c;
             }
         }
         return null;
@@ -141,11 +137,11 @@ public class Main {
         return null;
     }
     
-    public static void getHistorique(Client c){
+    public static List<Voyance> getHistorique(Client c){
         jpaUtil.creerEntityManager();
         List<Voyance> list = ClientDAO.getHistoriqueByClient(c);    
         jpaUtil.fermerEntityManager();
-        System.out.println(list);
+        return list;
     }
     
     public static List<Medium> rechercheMediums(List<Medium.Talent> talents){
@@ -155,8 +151,21 @@ public class Main {
         return res;
     }
     
-    public static void demanderVoyance(Client c){
-        
+    public static int demanderVoyance(Client c, Medium m){
+        List<Voyance> voy = getHistorique(c);
+        for(Voyance v : voy){
+            if(v.getStatus() != Voyance.Status.Termine)
+                return 0;
+        }
+        jpaUtil.creerEntityManager();
+        jpaUtil.ouvrirTransaction();
+        Voyance v = new Voyance(c, m);
+        Employe idle = EmployeDAO.getIdleEmploye();
+        v.assignEmploye(idle);
+        VoyanceDAO.persist(v);
+        jpaUtil.validerTransaction();
+        jpaUtil.fermerEntityManager();
+        return 1;
     }
     
     public static List<Voyance> getVoyance(Employe e){
@@ -166,8 +175,14 @@ public class Main {
         return res;
     }
     
-    public static void trouverClientParVoyance(Voyance v){
-        
+    public static void accepterVoyance(Voyance v){
+        v.setStatus(Voyance.Status.EnCours);
+        v.setDebut(new Date());
+        jpaUtil.creerEntityManager();
+        jpaUtil.ouvrirTransaction();
+        VoyanceDAO.update(v);
+        jpaUtil.validerTransaction();
+        jpaUtil.fermerEntityManager();
     }
     
     public static void getStats(Employe e){
