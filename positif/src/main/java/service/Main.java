@@ -42,45 +42,27 @@ public class Main {
         jpaUtil.init();
         Initialisation();
         
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = new Date();
-        try{
-            d = sdf.parse("21/12/2012");
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-        
-        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
-        
-        try {
-            System.out.println(InscriptionClient(c1));
-        }catch(IOException ex){
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        jpaUtil.creerEntityManager();
-        Client c = ClientDAO.find(new Long(4));
-        Medium v = MediumDAO.find(new Long(2), Medium.Talent.Voyant);
-        Employe e = EmployeDAO.find(new Long(1));
-        System.out.println(v);
-//        System.out.println(v.getSupport());
-        System.out.println(c);
-        System.out.println(e);
-        Voyance voy1 = new Voyance(c,e,v);
-        System.out.println(voy1);
-        jpaUtil.fermerEntityManager();
+
+//        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
+//        
+//        try {
+//            System.out.println(InscriptionClient(c1));
+//        }catch(IOException ex){
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
-        VoyanceDAO.persist(voy1);
+        Employe e = EmployeDAO.find(new Long(1));
+        System.out.println("emp e : "+e);
+        List<Voyance> voy = getVoyance(e);
+        System.out.println("voyance voy : " + voy);
         jpaUtil.validerTransaction();
-      //  Voyance voy = getVoyance(e);
-     //   System.out.println(voy);
+        jpaUtil.fermerEntityManager();
 //        List<Voyance> list = ClientDAO.getHistoriqueByClient(c);
 //        System.out.println(list);
-        jpaUtil.fermerEntityManager();
-        ArrayList<Medium.Talent> l = new ArrayList<>();
-        l.add(Medium.Talent.Voyant);
-        System.out.println(rechercheMediums(l));
+//        ArrayList<Medium.Talent> l = new ArrayList<>();
+//        l.add(Medium.Talent.Voyant);
+//        System.out.println(rechercheMediums(l));
     }
     public static void Initialisation(){
         Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
@@ -95,9 +77,6 @@ public class Main {
             e.printStackTrace();
         }
         Client cl = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
-        System.out.println(e1);
-        System.out.println(v1);
-        System.out.println(v2);
         
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
@@ -105,6 +84,17 @@ public class Main {
         MediumDAO.persist(v1);
         MediumDAO.persist(v2);
         ClientDAO.persist(cl);
+        jpaUtil.validerTransaction();
+        jpaUtil.ouvrirTransaction();
+        Client c = ClientDAO.find(new Long(4));
+        Medium v = MediumDAO.find(new Long(2), Medium.Talent.Voyant);
+        Employe e = EmployeDAO.find(new Long(1));
+        System.out.println(v);
+        System.out.println(c);
+        System.out.println(e);
+        Voyance voy1 = new Voyance(c,e,v);
+        System.out.println(voy1);
+        VoyanceDAO.persist(voy1);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
     }
@@ -169,11 +159,11 @@ public class Main {
         
     }
     
-    public static Voyance getVoyance(Employe e){
+    public static List<Voyance> getVoyance(Employe e){
         jpaUtil.creerEntityManager();
         List<Voyance> res = VoyanceDAO.getVoyancesByEmploye(e);
         jpaUtil.fermerEntityManager();
-        return res.get(0);
+        return res;
     }
     
     public static void trouverClientParVoyance(Voyance v){
