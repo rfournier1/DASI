@@ -7,6 +7,7 @@ package om;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,29 +37,35 @@ public class Voyance {
     private Date fin;
     private String com;
     private Status status;
-    private Long clientid;
-    private Long mediumid;
-    private Long employeid;
+    @ManyToOne
+    @JoinColumn(name="C_ID")
+    private Client client;
+    @ManyToOne
+    @JoinColumn(name="M_ID")
+    private Medium medium;
+    @ManyToOne
+    @JoinColumn(name="E_ID")
+    private Employe employe;
 
     public Voyance(Client c, Employe e, Medium m) {
         this.status = Status.EnAttente;
-        this.clientid=c.getId();
-        this.mediumid=m.getId();
-        this.employeid=e.getId();
+        this.client=c;
+        this.medium=m;
+        this.employe=e;
     }
     public Voyance(){
     }
 
-    public Long getClient() {
-        return clientid;
+    public Client getClient() {
+        return client;
     }
 
-    public Long getMedium() {
-        return mediumid;
+    public Medium getMedium() {
+        return medium;
     }
 
-    public Long getEmploye() {
-        return employeid;
+    public Employe getEmploye() {
+        return employe;
     }
     
     
@@ -112,7 +119,7 @@ public class Voyance {
 
     @Override
     public String toString() {
-        return "Voyance{" + "id=" + id + ", debut=" + debut + ", fin=" + fin + ", com=" + com + ", status=" + status + ", client=" + clientid + ", medium=" + mediumid + ", employe=" + employeid + '}';
+        return "Voyance{" + "id=" + id + ", debut=" + debut + ", fin=" + fin + ", com=" + com + ", status=" + status + ", client=" + client + ", medium=" + medium + ", employe=" + employe + '}';
     }
 
     
