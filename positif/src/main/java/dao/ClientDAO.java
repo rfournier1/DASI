@@ -36,11 +36,11 @@ public class ClientDAO {
         return em.find(Client.class, id);        
     }
     
-    public static List<Client> getClientByIdentifiant(String id){
+    public static Client getClientByIdentifiant(String id){
         EntityManager em = jpaUtil.obtenirEntityManager();
         Query query = em.createQuery("Select c from Client c where c.identifiant = :id"); 
         query.setParameter("id", id);
-        return query.getResultList();
+        return (Client) query.getResultList().get(0);
     }
     
     public static List<Voyance> getHistoriqueByClient(Client c){

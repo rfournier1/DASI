@@ -41,4 +41,12 @@ public class EmployeDAO{
         query.setParameter("id", id);
         return query.getResultList();
     }
+    
+    public static Employe getIdleEmploye(){
+        EntityManager em = jpaUtil.obtenirEntityManager();
+        Query query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID, v.status having v.status in (0, 1) order by count(*) asc fetch first 1 rows only"); 
+        if(query.getResultList().get(0) != null)
+            return find((Long)query.getResultList().get(0));
+        return null;
+    }
 }

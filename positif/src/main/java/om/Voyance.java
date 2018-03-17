@@ -48,12 +48,10 @@ public class Voyance {
     @JoinColumn(name="E_ID")
     private Employe employe;
 
-    public Voyance(Client c, Employe e, Medium m) {
+    public Voyance(Client c, Medium m) {
         this.status = Status.EnAttente;
         this.client=c;
-        this.medium=m;
-        this.employe=e;
-        
+        this.medium=m;        
     }
     public Voyance(){
     }
@@ -111,7 +109,11 @@ public class Voyance {
     public void setId(Long id) {
         this.id = id;
     }    
-
+    
+    public void assignEmploye(Employe e){
+        this.employe = e;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
