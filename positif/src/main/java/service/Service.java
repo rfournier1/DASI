@@ -229,6 +229,8 @@ public class Service {
         jpaUtil.ouvrirTransaction();
         Voyance v = new Voyance(c, m);
         Employe idle = EmployeDAO.getIdleEmploye(m);
+        if(idle == null)
+            return 0;
         idle.setStatus(false);
         v.assignEmploye(idle);
         EmployeDAO.update(idle);
