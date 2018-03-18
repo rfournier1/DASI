@@ -13,9 +13,15 @@ import java.util.Arrays;
 import java.util.Date;
 import om.Client;
 import om.Medium;
+import om.Voyance;
+import static service.Service.demanderVoyance;
+import static service.Service.getHistorique;
+import static service.Service.getMedium;
+import static service.Service.getVoyanceEnCours;
 import static service.Service.identificationClient;
 import static service.Service.inscriptionClient;
 import static service.Service.rechercheMediums;
+import static service.Service.terminerVoyance;
 import util.Saisie;
 
 /**
@@ -89,25 +95,71 @@ public class MainClient {
             
             System.out.println("Vous êtes log in");
             while(true){
-                choix = Saisie.lireInteger("tapez 1 pour vous log out, \rtapez 2 pour voir votre profil, \rtapez 3 pour voir la liste des mediums, \tapez 4 pour voir votre historique", Arrays.asList(1,2,3,4));
+                choix = Saisie.lireInteger("tapez 1 pour vous log out, \rtapez 2 pour voir votre profil, \rtapez 3 pour voir la liste des mediums, \rtapez 4 pour voir votre historique, \rtapez 5 pour demander une voyance", Arrays.asList(1,2,3,4,5));
                 if(choix == 1)
                     break;
                 switch(choix){
                     case 2 :
                         System.out.println(c);
+                        break;
                     case 3 :
                         ArrayList<Medium.Talent> listTal = new ArrayList<Medium.Talent>();
+                        System.out.println("Quels talents ?");
                         for(int i=0; i<3; i++){
-                            int choixTal = Saisie.lireInteger("Quels talents ? \r1 voyants, 2 tarologue, 3 astrologue, 4 stop", Arrays.asList(1,2,3,4));
+                            int choixTal = Saisie.lireInteger("1 voyants, 2 tarologue, 3 astrologue, 4 stop", Arrays.asList(1,2,3,4));
                             if(choixTal == 4)
                                 break;
                             listTal.add(Medium.Talent.intToTalent(choixTal));
                         }
                         for(Medium m : rechercheMediums(listTal))
                         {
-                            System.out.println(m.getTalent()+" "+m.getPrenom()+" "+m.getNom());
+                            System.out.println(m.getId()+" "+m.getTalent()+" "+m.getPrenom()+" "+m.getNom()+" infos : "+m.getInfos());
                         }
+                        while(true){
+                            int voir = Saisie.lireInteger("Voir le profil d'un médium ? 1 oui, 2 non", Arrays.asList(1,2));
+                            if(voir == 2)
+                                break;
+                            String id = Saisie.lireChaine("id : ");
+                            int tal = Saisie.lireInteger("Quel talent ? \r1 voyants, 2 tarologue, 3 astrologue", Arrays.asList(1,2,3));
+                            Medium voirM = getMedium(Long.valueOf(id).longValue(), Medium.Talent.intToTalent(tal));
+                            if(voirM == null)
+                                System.out.println("échec");
+                            else{
+                                System.out.println(voirM.getId()+" "+voirM.getTalent()+" "+voirM.getPrenom()+" "+voirM.getNom()+" infos : "+voirM.getInfos());
+                                System.out.println(voirM.getBio());
+                            }
+                        }
+                        break;
                     case 4 :
+                        for(Voyance v : getHistorique(c)){
+                            System.out.println(v.toStringClient());
+                        }
+                        break;
+                    case 5 :
+                        System.out.println("Indiquez le medium");
+                        String id = Saisie.lireChaine("id : ");
+                        int tal = Saisie.lireInteger("Quel talent ? \r1 voyants, 2 tarologue, 3 astrologue", Arrays.asList(1,2,3));
+                        Medium voyM = getMedium(Long.valueOf(id).longValue(), Medium.Talent.intToTalent(tal));
+                        demanderVoyance(c, voyM);
+                        while(true){
+                            Voyance currentV = getVoyanceEnCours(c);
+                            if(currentV == null){
+                                System.out.println("abort");
+                                break;
+                            }
+                            System.out.println("Status de votre demande :");
+                            System.out.println(currentV.toStringClient());
+                            int attente = Saisie.lireInteger("1 refresh, 2 abandonner la demande", Arrays.asList(1,2));
+                            switch(attente){
+                                case 1 :
+                                    continue;
+                                case 2 :
+                                    terminerVoyance(currentV, "abandonClient");
+                                    break;
+                            }
+                            if(attente == 2)
+                                break;
+                        }
                 }
             }
             System.out.println("vous êtes log out");

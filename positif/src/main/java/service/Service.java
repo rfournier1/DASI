@@ -48,6 +48,8 @@ public class Service {
         
         jpaUtil.init();
         initialisation();
+        
+        Saisie.pause();
 
 //        jpaUtil.creerEntityManager();
 //        Employe e = EmployeDAO.find(new Long(1));
@@ -71,6 +73,25 @@ public class Service {
 //        Employe e = EmployeDAO.find(new Long(2));
 //        System.out.println(e);
 //        jpaUtil.fermerEntityManager();
+//        
+//        List<Voyance> voy = getVoyance(e);
+//        System.out.println("voyance voy : " + voy);
+//        
+//        List<Voyance> list = getHistorique(c);
+//        System.out.println(list);
+//        ArrayList<Medium.Talent> l = new ArrayList<>();
+//        l.add(Medium.Talent.Voyant);
+//        List<Medium> listM = rechercheMediums(l);
+//        System.out.println(listM);
+//        demanderVoyance(c, listM.get(0));
+//        accepterVoyance(list.get(0));
+//        System.out.println(getHistorique(c));
+//        jpaUtil.creerEntityManager();
+//        Employe e = EmployeDAO.find(new Long(2));
+//        System.out.println(e);
+//        jpaUtil.fermerEntityManager();
+//        getStats();
+//        
 //        getStats();
         
 //        List<Voyance> voy = getAllVoyance(e);
@@ -99,39 +120,44 @@ public class Service {
         Employe e3 = new Employe("Doe","Jotaro","jdoe3","azerty",col);
         Employe e4 = new Employe("Doe","Josuke","jdoe4","azerty",col);
         Employe e5 = new Employe("Doe","Jolyne","jdoe5","azerty",col);
-        jpaUtil.creerEntityManager();
-        jpaUtil.ouvrirTransaction();
-//        EmployeDAO.persist(e0);  
-        EmployeDAO.persist(e1);  
-        EmployeDAO.persist(e2);  
-        EmployeDAO.persist(e3);  
-        EmployeDAO.persist(e4);  
-        EmployeDAO.persist(e5);    
-        MediumDAO.persist(v1);
-        MediumDAO.persist(v2);
-        MediumDAO.persist(v3);
-        MediumDAO.persist(t1);
-        MediumDAO.persist(t2);
-        MediumDAO.persist(a1);
-        MediumDAO.persist(a2);
-        jpaUtil.validerTransaction();
-        jpaUtil.ouvrirTransaction();
-//        Voyance voy1 = new Voyance(c1,v1);
-//        voy1.assignEmploye(e1);
-//        Voyance voy2 = new Voyance(c1,v1);
-//        voy2.assignEmploye(e1);  
-//        Voyance voy3 = new Voyance(c1,v2);
-//        voy3.assignEmploye(e1);
-//        Voyance voy4 = new Voyance(c1,v1);
-//        voy4.assignEmploye(e2);
-//        VoyanceDAO.persist(voy1);
-//        VoyanceDAO.persist(voy2);
-//        VoyanceDAO.persist(voy3);
-//        VoyanceDAO.persist(voy4);        
-
-        jpaUtil.validerTransaction();
         
-        jpaUtil.fermerEntityManager();
+        try{
+            jpaUtil.creerEntityManager();
+            jpaUtil.ouvrirTransaction();
+    //        EmployeDAO.persist(e0);  
+            EmployeDAO.persist(e1);  
+            EmployeDAO.persist(e2);  
+            EmployeDAO.persist(e3);  
+            EmployeDAO.persist(e4);  
+            EmployeDAO.persist(e5);    
+            MediumDAO.persist(v1);
+            MediumDAO.persist(v2);
+            MediumDAO.persist(v3);
+            MediumDAO.persist(t1);
+            MediumDAO.persist(t2);
+            MediumDAO.persist(a1);
+            MediumDAO.persist(a2);
+            jpaUtil.validerTransaction();
+            jpaUtil.ouvrirTransaction();
+    //        Voyance voy1 = new Voyance(c1,v1);
+    //        voy1.assignEmploye(e1);
+    //        Voyance voy2 = new Voyance(c1,v1);
+    //        voy2.assignEmploye(e1);  
+    //        Voyance voy3 = new Voyance(c1,v2);
+    //        voy3.assignEmploye(e1);
+    //        Voyance voy4 = new Voyance(c1,v1);
+    //        voy4.assignEmploye(e2);
+    //        VoyanceDAO.persist(voy1);
+    //        VoyanceDAO.persist(voy2);
+    //        VoyanceDAO.persist(voy3);
+    //        VoyanceDAO.persist(voy4);        
+
+            jpaUtil.validerTransaction();
+
+            jpaUtil.fermerEntityManager();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
     
     public static int inscriptionClient(Client c){
@@ -189,16 +215,22 @@ public class Service {
         return res;
     }
     
+    public static Medium getMedium(Long id, Medium.Talent t){
+        jpaUtil.creerEntityManager();
+        Medium res = MediumDAO.find(id, t);
+        jpaUtil.fermerEntityManager();
+        return res;
+    }
+    
     public static int demanderVoyance(Client c, Medium m){
-        List<Voyance> voy = getHistorique(c);
-        for(Voyance v : voy){
-            if(v.getStatus() != Voyance.Status.Termine)
-                return 0;
-        }
+        if(getVoyanceEnCours(c) != null)
+            return 0;
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
         Voyance v = new Voyance(c, m);
         Employe idle = EmployeDAO.getIdleEmploye(m);
+        if(idle == null)
+            return 0;
         idle.setStatus(false);
         v.assignEmploye(idle);
         EmployeDAO.update(idle);
@@ -206,6 +238,15 @@ public class Service {
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
         return 1;
+    }
+    
+    public static Voyance getVoyanceEnCours(Client c){
+        List<Voyance> voy = getHistorique(c);
+        for(Voyance v : voy){
+            if(v.getStatus() != Voyance.Status.Termine)
+                return v;
+        }
+        return null;
     }
     
     public static List<Voyance> getAllVoyance(Employe e){

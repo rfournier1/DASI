@@ -42,7 +42,7 @@ public class Tarologue extends Medium{
     public Tarologue() {
     }
     
-    public Voyant.Support getSupport() {
-        return null;
+    public String getInfos() {
+        return cartes.toString();
     }
 }

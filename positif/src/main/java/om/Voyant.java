@@ -42,8 +42,8 @@ public class Voyant extends Medium{
     public Voyant() {
     }
 
-    public Support getSupport() {
-        return support;
+    public String getInfos() {
+        return support.name();
     }
     
     @Override

@@ -73,6 +73,10 @@ public abstract class Medium implements Serializable {
         return id;
     }
 
+    public String getBio() {
+        return bio;
+    }
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -117,7 +121,7 @@ public abstract class Medium implements Serializable {
         return true;
     }
     
-    public abstract Support getSupport();
+    public abstract String getInfos();
     
     @Override
     public String toString() {
