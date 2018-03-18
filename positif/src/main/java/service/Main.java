@@ -25,7 +25,9 @@ import om.Medium;
 import om.Voyance;
 import dao.VoyanceDAO;
 import java.util.ArrayList;
+import om.Astrologue;
 import om.Medium;
+import om.Tarologue;
 import util.AstroTest;
 
 /**
@@ -62,10 +64,19 @@ public class Main {
         System.out.println(getHistorique(c));
     }
     public static void Initialisation(){
-        Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
-        Voyant v2 = new Voyant("Michelle","Mme",Voyant.Support.MarcDeCafe,"LA fameuse");
-        
-        Employe e1 = new Employe();
+        Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.BouleDeCristal,"LA fameuse");
+        Voyant v2 = new Voyant("Michelle","Mme",Voyant.Support.MarcDeCafe,"Vous aidera a retrouver votre chat");
+        Voyant v3 = new Voyant("Gitane","La Vieille",Voyant.Support.MarcDeCafe,"On dit qu'elle a un jour permis à un berger andaloux de trouver un trésor");
+        Astrologue a1 = new Astrologue("Attan","Charles","INSANE Lyon","59","Major de promo !");
+        Astrologue a2 = new Astrologue("Valpierre","Artis","ONDINE","1","La tête dans les étoiles, pour mieux vous servir");
+        Tarologue t1 = new Tarologue("Nil'Erg","Duom",Tarologue.Cartes.Marseille,"Ecoute les cartes avec sagesse");
+        Tarologue t2 = new Tarologue("Le Chanteur","Merlin",Tarologue.Cartes.Broceliande,"Autodidacte surprenant, il a un vrai don pour le tarot");
+        Employe e0 = new Employe();
+        Employe e1 = new Employe("Doe","Jonathan","jdoe1","azerty");
+        Employe e2 = new Employe("Doe","Joseph","jdoe2","azerty");
+        Employe e3 = new Employe("Doe","Jotaro","jdoe3","azerty");
+        Employe e4 = new Employe("Doe","Josuke","jdoe4","azerty");
+        Employe e5 = new Employe("Doe","Jolyne","jdoe5","azerty");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date d = new Date();
         try{
@@ -74,21 +85,24 @@ public class Main {
             e.printStackTrace();
         }
         Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
-        
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
-        EmployeDAO.persist(e1);    
+        EmployeDAO.persist(e0);  
+        EmployeDAO.persist(e1);  
+        EmployeDAO.persist(e2);  
+        EmployeDAO.persist(e3);  
+        EmployeDAO.persist(e4);  
+        EmployeDAO.persist(e5);    
         MediumDAO.persist(v1);
         MediumDAO.persist(v2);
+        MediumDAO.persist(v3);
+        MediumDAO.persist(t1);
+        MediumDAO.persist(t2);
+        MediumDAO.persist(a1);
+        MediumDAO.persist(a2);
         ClientDAO.persist(c1);
         jpaUtil.validerTransaction();
         jpaUtil.ouvrirTransaction();
-//        Client c = ClientDAO.find(new Long(4));
-//        Medium v = MediumDAO.find(new Long(2), Medium.Talent.Voyant);
-//        Employe e = EmployeDAO.find(new Long(1));
-//        System.out.println(v);
-//        System.out.println(c);
-//        System.out.println(e);
         Voyance voy1 = new Voyance(c1,v1);
         VoyanceDAO.persist(voy1);
         voy1.assignEmploye(e1);
@@ -213,6 +227,6 @@ public class Main {
     }
     
     public static void getStats(Employe e){
-        
+        Hash
     }
 }
