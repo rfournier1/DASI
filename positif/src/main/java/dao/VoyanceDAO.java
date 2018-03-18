@@ -22,9 +22,9 @@ public class VoyanceDAO {
         em.persist(v);
     }
     
-    public static void update(Voyance v){
+    public static Voyance update(Voyance v){
         EntityManager em = jpaUtil.obtenirEntityManager();
-        em.merge(v);
+        return em.merge(v);
     }
     
     public static void delete(Voyance v){

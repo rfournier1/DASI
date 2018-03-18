@@ -48,7 +48,7 @@ public class Main {
         System.out.println("emp e : "+e);
         jpaUtil.fermerEntityManager();
         
-        List<Voyance> voy = getVoyance(e);
+        List<Voyance> voy = getAllVoyance(e);
         System.out.println("voyance voy : " + voy);
         
         List<Voyance> list = getHistorique(c);
@@ -161,18 +161,29 @@ public class Main {
         jpaUtil.ouvrirTransaction();
         Voyance v = new Voyance(c, m);
         Employe idle = EmployeDAO.getIdleEmploye();
+        idle.setStatus(false);
         v.assignEmploye(idle);
+        EmployeDAO.update(idle);
         VoyanceDAO.persist(v);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
         return 1;
     }
     
-    public static List<Voyance> getVoyance(Employe e){
+    public static List<Voyance> getAllVoyance(Employe e){
         jpaUtil.creerEntityManager();
         List<Voyance> res = VoyanceDAO.getVoyancesByEmploye(e);
         jpaUtil.fermerEntityManager();
         return res;
+    }
+    
+    public static Voyance getVoyanceEnCours(Employe e){
+        List<Voyance> all = getAllVoyance(e);
+        for(Voyance v : all){
+            if(v.getStatus() != Voyance.Status.Termine)
+                return v;
+        }
+        return null;
     }
     
     public static void accepterVoyance(Voyance v){
@@ -183,6 +194,22 @@ public class Main {
         VoyanceDAO.update(v);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
+    }
+    
+    public static void terminerVoyance(Voyance v, String com){
+        if(v.getStatus() != Voyance.Status.Termine){
+            v.setStatus(Voyance.Status.Termine);
+            v.setFin(new Date());
+            v.setCom(com);
+            Employe e = v.getEmploye();
+            e.setStatus(true);
+            jpaUtil.creerEntityManager();
+            jpaUtil.ouvrirTransaction();
+            VoyanceDAO.update(v);
+            EmployeDAO.update(e);
+            jpaUtil.validerTransaction();
+            jpaUtil.fermerEntityManager();
+        }
     }
     
     public static void getStats(Employe e){
