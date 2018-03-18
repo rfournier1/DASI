@@ -25,6 +25,8 @@ import om.Medium;
 import om.Voyance;
 import dao.VoyanceDAO;
 import java.util.ArrayList;
+import java.util.HashMap;
+import javafx.util.Pair;
 import om.Astrologue;
 import om.Medium;
 import om.Tarologue;
@@ -44,24 +46,29 @@ public class Main {
         jpaUtil.init();
         Initialisation();
         
+//        jpaUtil.creerEntityManager();
+//        Employe e = EmployeDAO.find(new Long(1));
+//        Client c = ClientDAO.getClientByIdentifiant("Jo");
+//        System.out.println("emp e : "+e);
+//        jpaUtil.fermerEntityManager();
+//        
+//        List<Voyance> voy = getVoyance(e);
+//        System.out.println("voyance voy : " + voy);
+//        
+//        List<Voyance> list = getHistorique(c);
+//        System.out.println(list);
+//        ArrayList<Medium.Talent> l = new ArrayList<>();
+//        l.add(Medium.Talent.Voyant);
+//        List<Medium> listM = rechercheMediums(l);
+//        System.out.println(listM);
+//        demanderVoyance(c, listM.get(0));
+//        accepterVoyance(list.get(0));
+//        System.out.println(getHistorique(c));
         jpaUtil.creerEntityManager();
-        Employe e = EmployeDAO.find(new Long(1));
-        Client c = ClientDAO.getClientByIdentifiant("Jo");
-        System.out.println("emp e : "+e);
+        Employe e = EmployeDAO.find(new Long(2));
+        System.out.println(e);
         jpaUtil.fermerEntityManager();
-        
-        List<Voyance> voy = getVoyance(e);
-        System.out.println("voyance voy : " + voy);
-        
-        List<Voyance> list = getHistorique(c);
-        System.out.println(list);
-        ArrayList<Medium.Talent> l = new ArrayList<>();
-        l.add(Medium.Talent.Voyant);
-        List<Medium> listM = rechercheMediums(l);
-        System.out.println(listM);
-        demanderVoyance(c, listM.get(0));
-        accepterVoyance(list.get(0));
-        System.out.println(getHistorique(c));
+        getStats();
     }
     public static void Initialisation(){
         Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.BouleDeCristal,"LA fameuse");
@@ -102,11 +109,21 @@ public class Main {
         MediumDAO.persist(a2);
         ClientDAO.persist(c1);
         jpaUtil.validerTransaction();
-        jpaUtil.ouvrirTransaction();
+        jpaUtil.ouvrirTransaction(); 
         Voyance voy1 = new Voyance(c1,v1);
-        VoyanceDAO.persist(voy1);
         voy1.assignEmploye(e1);
+        Voyance voy2 = new Voyance(c1,v1);
+        voy2.assignEmploye(e1);  
+        Voyance voy3 = new Voyance(c1,v2);
+        voy3.assignEmploye(e1);
+        Voyance voy4 = new Voyance(c1,v1);
+        voy4.assignEmploye(e2);
+        VoyanceDAO.persist(voy1);
+        VoyanceDAO.persist(voy2);
+        VoyanceDAO.persist(voy3);
+        VoyanceDAO.persist(voy4);        
         jpaUtil.validerTransaction();
+        
         jpaUtil.fermerEntityManager();
     }
     
@@ -199,7 +216,10 @@ public class Main {
         jpaUtil.fermerEntityManager();
     }
     
-    public static void getStats(Employe e){
-        Hash
+    public static Pair<HashMap<Medium,Long>,HashMap<Employe,Long>> getStats(){
+        jpaUtil.creerEntityManager();
+        Pair<HashMap<Medium,Long>,HashMap<Employe,Long>> stats = new Pair<>(VoyanceDAO.getStatsMedium(),VoyanceDAO.getStatsEmploye());
+        jpaUtil.fermerEntityManager();
+        return stats;
     }
 }
