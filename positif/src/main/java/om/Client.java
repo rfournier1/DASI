@@ -27,7 +27,21 @@ public class Client implements Serializable {
     //public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public enum Civilite{
         Mr,
-        Mme;
+        Mme,
+        Autre;
+        
+        public static Civilite intToCivilite(int i){
+            switch(i){
+                case 1 :
+                    return Mr;
+                case 2 :
+                    return Mme;
+                case 3 :
+                    return Autre;
+                default :
+                    return Mr;
+            }
+        }
     }
 //    
 //    private static final long serialVersionUID = 1L;

@@ -33,6 +33,19 @@ public abstract class Medium implements Serializable {
         Voyant,
         Tarologue,
         Astrologue;
+        
+        public static Talent intToTalent(int i){
+            switch(i){
+                case 1 :
+                    return Voyant;
+                case 2 :
+                    return Tarologue;
+                case 3 :
+                    return Astrologue;
+                default :
+                    return Voyant;
+            }
+        }
     }
     private static final long
             serialVersionUID = 1L;
@@ -74,6 +87,10 @@ public abstract class Medium implements Serializable {
 
     public String getPrenom() {
         return prenom;
+    }
+
+    public Talent getTalent() {
+        return talent;
     }
 
     public void setPrenom(String prenom) {

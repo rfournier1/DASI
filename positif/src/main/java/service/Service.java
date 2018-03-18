@@ -25,16 +25,18 @@ import om.Medium;
 import om.Voyance;
 import dao.VoyanceDAO;
 import java.util.ArrayList;
+import java.util.Arrays;
 import om.Astrologue;
 import om.Medium;
 import om.Tarologue;
 import util.AstroTest;
+import util.Saisie;
 
 /**
  *
  * @author bdurand
  */
-public class Main {
+public class Service {
 
     /**
      * @param args the command line arguments
@@ -42,28 +44,29 @@ public class Main {
     public static void main(String[] args) {
         
         jpaUtil.init();
-        Initialisation();
+        initialisation();
         
-        jpaUtil.creerEntityManager();
-        Employe e = EmployeDAO.find(new Long(1));
-        Client c = ClientDAO.getClientByIdentifiant("Jo");
-        System.out.println("emp e : "+e);
-        jpaUtil.fermerEntityManager();
         
-        List<Voyance> voy = getAllVoyance(e);
-        System.out.println("voyance voy : " + voy);
-        
-        List<Voyance> list = getHistorique(c);
-        System.out.println(list);
-        ArrayList<Medium.Talent> l = new ArrayList<>();
-        l.add(Medium.Talent.Voyant);
-        List<Medium> listM = rechercheMediums(l);
-        System.out.println(listM);
-        demanderVoyance(c, listM.get(0));
-        accepterVoyance(list.get(0));
-        System.out.println(getHistorique(c));
+//        jpaUtil.creerEntityManager();
+//        Employe e = EmployeDAO.find(new Long(1));
+//        Client c = ClientDAO.getClientByIdentifiant("Jo");
+//        System.out.println("emp e : "+e);
+//        jpaUtil.fermerEntityManager();
+//        
+//        List<Voyance> voy = getAllVoyance(e);
+//        System.out.println("voyance voy : " + voy);
+//        
+//        List<Voyance> list = getHistorique(c);
+//        System.out.println(list);
+//        ArrayList<Medium.Talent> l = new ArrayList<>();
+//        l.add(Medium.Talent.Voyant);
+//        List<Medium> listM = rechercheMediums(l);
+//        System.out.println(listM);
+//        demanderVoyance(c, listM.get(0));
+//        accepterVoyance(list.get(0));
+//        System.out.println(getHistorique(c));
     }
-    public static void Initialisation(){
+    public static void initialisation(){
         Voyant v1 = new Voyant("Irma","Mme",Voyant.Support.BouleDeCristal,"LA fameuse");
         Voyant v2 = new Voyant("Michelle","Mme",Voyant.Support.MarcDeCafe,"Vous aidera a retrouver votre chat");
         Voyant v3 = new Voyant("Gitane","La Vieille",Voyant.Support.MarcDeCafe,"On dit qu'elle a un jour permis à un berger andaloux de trouver un trésor");
@@ -71,23 +74,16 @@ public class Main {
         Astrologue a2 = new Astrologue("Valpierre","Artis","ONDINE","1","La tête dans les étoiles, pour mieux vous servir");
         Tarologue t1 = new Tarologue("Nil'Erg","Duom",Tarologue.Cartes.Marseille,"Ecoute les cartes avec sagesse");
         Tarologue t2 = new Tarologue("Le Chanteur","Merlin",Tarologue.Cartes.Broceliande,"Autodidacte surprenant, il a un vrai don pour le tarot");
-        Employe e0 = new Employe();
+//        Employe e0 = new Employe();
         Employe e1 = new Employe("Doe","Jonathan","jdoe1","azerty");
         Employe e2 = new Employe("Doe","Joseph","jdoe2","azerty");
         Employe e3 = new Employe("Doe","Jotaro","jdoe3","azerty");
         Employe e4 = new Employe("Doe","Josuke","jdoe4","azerty");
         Employe e5 = new Employe("Doe","Jolyne","jdoe5","azerty");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = new Date();
-        try{
-            d = sdf.parse("21/12/2012");
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mail", "adress", "tel", "Jo", "password");
+        
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
-        EmployeDAO.persist(e0);  
+//        EmployeDAO.persist(e0);  
         EmployeDAO.persist(e1);  
         EmployeDAO.persist(e2);  
         EmployeDAO.persist(e3);  
@@ -100,22 +96,21 @@ public class Main {
         MediumDAO.persist(t2);
         MediumDAO.persist(a1);
         MediumDAO.persist(a2);
-        ClientDAO.persist(c1);
         jpaUtil.validerTransaction();
         jpaUtil.ouvrirTransaction();
-        Voyance voy1 = new Voyance(c1,v1);
-        VoyanceDAO.persist(voy1);
-        voy1.assignEmploye(e1);
+//        Voyance voy1 = new Voyance(c1,v1);
+//        VoyanceDAO.persist(voy1);
+//        voy1.assignEmploye(e1);
         jpaUtil.validerTransaction();
         jpaUtil.fermerEntityManager();
     }
     
-    public static int InscriptionClient(Client c) throws IOException{
+    public static int inscriptionClient(Client c){
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
         AstroTest astro = new AstroTest(AstroTest.MA_CLÉ_ASTRO_API);
-        c.setProfilAstro(astro.getProfil(c.getPrenom(), c.getDate()));
         try{
+            c.setProfilAstro(astro.getProfil(c.getPrenom(), c.getDate()));
             ClientDAO.persist(c);
             jpaUtil.validerTransaction();
         }catch(Exception e){
@@ -126,19 +121,19 @@ public class Main {
         return 1;
     }
     
-    public static Client IdentificationClient(String identifiant, String mdp){
+    public static Client identificationClient(String identifiant, String mdp){
         jpaUtil.creerEntityManager();
         Client c = ClientDAO.getClientByIdentifiant(identifiant);
         jpaUtil.fermerEntityManager();
         if(c != null){
-            if(c.getMdp() == mdp){
+            if(c.getMdp().equals(mdp)){
                 return c;
             }
         }
         return null;
     }
     
-    public static Employe IdentificationEmploye(String identifiant, String mdp){
+    public static Employe identificationEmploye(String identifiant, String mdp){
         jpaUtil.creerEntityManager();
         List<Employe> list = EmployeDAO.getEmployeByIdentifiant(identifiant);
         jpaUtil.fermerEntityManager();
@@ -227,6 +222,5 @@ public class Main {
     }
     
     public static void getStats(Employe e){
-        Hash
     }
 }
