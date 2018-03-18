@@ -41,6 +41,8 @@ public class Employe implements Serializable {
     public Employe() {
         nom="Doe";
         prenom="John";
+        identifiant="JDoe";
+        mdp="azerty";
         status=true;
     }
     
