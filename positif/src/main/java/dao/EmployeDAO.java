@@ -46,10 +46,13 @@ public class EmployeDAO{
     
     public static Employe getIdleEmploye(){
         EntityManager em = jpaUtil.obtenirEntityManager();
+//        Query q = em.createNativeQuery("Select e.id from Employe e MINUS select distinct v.E_ID from Voyance v");
         Query query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc fetch first 1 rows only"); 
         if(!query.getResultList().isEmpty()){
+            System.out.println(query.getResultList());
             for(Object o : query.getResultList()){
                 Employe res = find((Long)o);
+                System.out.println(res);
                 if(res.getStatus())
                     return res;
             }

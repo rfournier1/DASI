@@ -121,6 +121,10 @@ public class Voyance {
         return hash;
     }
 
+    public String toStringClient(){
+        return "debut=" + debut + ", fin=" + fin + ", medium=" + medium + ", status=" + status;
+    }
+    
     @Override
     public String toString() {
         return "Voyance{" + "id=" + id + ", debut=" + debut + ", fin=" + fin + ", com=" + com + ", status=" + status + ", client=" + client + ", medium=" + medium + ", employe=" + employe + '}';

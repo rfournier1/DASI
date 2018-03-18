@@ -57,7 +57,7 @@ public class MediumDAO {
         }
         if(list.contains(Medium.Talent.Tarologue))
         {
-            Query query = em.createQuery("Select t from tarologue t");
+            Query query = em.createQuery("Select t from Tarologue t");
             res.addAll(query.getResultList());
         }
         if(list.contains(Medium.Talent.Voyant))

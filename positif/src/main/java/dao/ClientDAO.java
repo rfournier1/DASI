@@ -40,7 +40,11 @@ public class ClientDAO {
         EntityManager em = jpaUtil.obtenirEntityManager();
         Query query = em.createQuery("Select c from Client c where c.identifiant = :id"); 
         query.setParameter("id", id);
-        return (Client) query.getResultList().get(0);
+        List<Client> list = query.getResultList();
+        if(!list.isEmpty())
+            return list.get(0);
+        else 
+            return null;
     }
     
     public static List<Voyance> getHistoriqueByClient(Client c){
