@@ -51,6 +51,12 @@ public class Employe implements Serializable {
         mdp="azerty";
         status=true;
     }
+    public String getPrenom(){
+        return prenom;
+    }
+    public String getNom(){
+        return nom;
+    }
     
     public String getIdentifiant() {
         return identifiant;
@@ -75,7 +81,8 @@ public class Employe implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    
     public Collection<Medium> getMediumsPossibles() {
         return mediumsPossibles;
     }
