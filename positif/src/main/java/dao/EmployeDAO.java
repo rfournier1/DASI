@@ -23,9 +23,9 @@ public class EmployeDAO{
         em.persist(emp);
     }
     
-    public static void update(Employe emp){
+    public static Employe update(Employe emp){
         EntityManager em = jpaUtil.obtenirEntityManager();
-        em.merge(emp);
+        return em.merge(emp);
     }
     
     public static void delete(Employe emp){
@@ -46,9 +46,14 @@ public class EmployeDAO{
     
     public static Employe getIdleEmploye(){
         EntityManager em = jpaUtil.obtenirEntityManager();
-        Query query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID, v.status having v.status in (0, 1) order by count(*) asc fetch first 1 rows only"); 
-        if(query.getResultList().get(0) != null)
-            return find((Long)query.getResultList().get(0));
+        Query query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc fetch first 1 rows only"); 
+        if(!query.getResultList().isEmpty()){
+            for(Object o : query.getResultList()){
+                Employe res = find((Long)o);
+                if(res.getStatus())
+                    return res;
+            }
+        }
         return null;
     }
 }
