@@ -5,6 +5,7 @@
  */
 package om;
 
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -111,7 +112,7 @@ public class Voyance {
     }    
     
     public void assignEmploye(Employe e){
-        this.employe = e;
+        this.employe=e;
     }
     
     @Override

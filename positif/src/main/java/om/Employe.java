@@ -6,11 +6,14 @@
 package om;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * 
@@ -29,12 +32,15 @@ public class Employe implements Serializable {
     private String identifiant;
     private String mdp;
     private boolean status;
+    @OneToMany
+    private Collection<Medium> mediumsPossibles;
 
-    public Employe(String nom, String prenom, String identifiant, String mdp) {
+    public Employe(String nom, String prenom, String identifiant, String mdp, Collection<Medium> mediums) {
         this.nom = nom;
         this.prenom = prenom;
         this.identifiant = identifiant;
         this.mdp = mdp;
+        this.mediumsPossibles=mediums;
         status = true;
     }
 
@@ -68,6 +74,10 @@ public class Employe implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Collection<Medium> getMediumsPossibles() {
+        return mediumsPossibles;
     }
 
     @Override

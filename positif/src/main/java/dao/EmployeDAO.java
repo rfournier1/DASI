@@ -5,7 +5,7 @@
  */
 package dao;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -44,14 +44,20 @@ public class EmployeDAO{
         return query.getResultList();
     }
     
-    public static Employe getIdleEmploye(){
+    public static Employe getIdleEmploye(Medium m){
         EntityManager em = jpaUtil.obtenirEntityManager();
         Query query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc fetch first 1 rows only"); 
         if(!query.getResultList().isEmpty()){
             for(Object o : query.getResultList()){
                 Employe res = find((Long)o);
-                if(res.getStatus())
-                    return res;
+                Collection<Medium> medPos = res.getMediumsPossibles();
+                if(res.getStatus()){
+                    for(Medium med : medPos){
+                        if(m.equals(med)){
+                            return res;
+                        }
+                    }
+                }
             }
         }
         return null;
