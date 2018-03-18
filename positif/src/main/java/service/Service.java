@@ -44,6 +44,9 @@ public class Service {
     /**
      * @param args the command line arguments
      */
+    public static void iniJpaUtil(){
+        jpaUtil.init();
+    }
     public static void main(String[] args) {
         
         jpaUtil.init();
@@ -190,12 +193,11 @@ public class Service {
     
     public static Employe identificationEmploye(String identifiant, String mdp){
         jpaUtil.creerEntityManager();
-        List<Employe> list = EmployeDAO.getEmployeByIdentifiant(identifiant);
+        Employe e = EmployeDAO.getEmployeByIdentifiant(identifiant);
         jpaUtil.fermerEntityManager();
-        System.out.println(list);
-        if(!list.isEmpty()){
-            if(list.get(0).getMdp().equals(mdp)){
-                return list.get(0);
+        if(e!=null){
+            if(e.getMdp().equals(mdp)){
+                return e;
             }
         }
         return null;
@@ -297,5 +299,17 @@ public class Service {
             jpaUtil.validerTransaction();
             jpaUtil.fermerEntityManager();
         }
+    }
+    
+    public static List<String> genererPredictions(Client c, int amour, int sante, int travail){
+        AstroTest astro = new AstroTest(AstroTest.MA_CLÉ_ASTRO_API);
+        List<String> result = new ArrayList<>();
+        try{
+            result = astro.getPredictions(c.getCouleur(),c.getAnimalTotem(),amour,sante,travail);
+        }catch(IOException ex){
+            ex.printStackTrace();
+            return null;
+        }
+        return result;
     }
 }

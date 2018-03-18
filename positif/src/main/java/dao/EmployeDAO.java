@@ -37,11 +37,15 @@ public class EmployeDAO{
         return em.find(Employe.class, id);
     }        
 
-    public static List<Employe> getEmployeByIdentifiant(String id){
+    public static Employe getEmployeByIdentifiant(String id){
         EntityManager em = jpaUtil.obtenirEntityManager();
         Query query = em.createQuery("Select e from Employe e where e.identifiant = :id"); 
         query.setParameter("id", id);
-        return query.getResultList();
+        List<Employe> list = query.getResultList();
+        if(!list.isEmpty())
+            return list.get(0);
+        else 
+            return null;
     }
     
     public static Employe getIdleEmploye(Medium m){

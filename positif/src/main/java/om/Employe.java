@@ -54,6 +54,7 @@ public class Employe implements Serializable {
     public String getPrenom(){
         return prenom;
     }
+    
     public String getNom(){
         return nom;
     }

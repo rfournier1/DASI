@@ -125,7 +125,7 @@ public abstract class Medium implements Serializable {
     
     @Override
     public String toString() {
-        return "Medium{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", talent=" + talent + ", bio=" + bio + '}';
+        return (prenom + " "+nom+" - "+talent);
     }
     
     
