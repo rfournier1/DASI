@@ -5,7 +5,7 @@
  */
 package dao;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -44,17 +44,25 @@ public class EmployeDAO{
         return query.getResultList();
     }
     
-    public static Employe getIdleEmploye(){
+    public static Employe getIdleEmploye(Medium m){
         EntityManager em = jpaUtil.obtenirEntityManager();
-//        Query q = em.createNativeQuery("Select e.id from Employe e MINUS select distinct v.E_ID from Voyance v");
-        Query query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc fetch first 1 rows only"); 
-        if(!query.getResultList().isEmpty()){
-            System.out.println(query.getResultList());
-            for(Object o : query.getResultList()){
+        Query query = em.createNativeQuery("Select e.id from Employe e MINUS select distinct v.E_ID from Voyance v");
+        List<Object> list = query.getResultList();
+        if(list.isEmpty()){
+            query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc fetch first 1 rows only"); 
+            list = query.getResultList();
+        }
+            if(!list.isEmpty()){
+            for(Object o : list){
                 Employe res = find((Long)o);
-                System.out.println(res);
-                if(res.getStatus())
-                    return res;
+                Collection<Medium> medPos = res.getMediumsPossibles();
+                if(res.getStatus()){
+                    for(Medium med : medPos){
+                        if(m.equals(med)){
+                            return res;
+                        }
+                    }
+                }
             }
         }
         return null;

@@ -26,6 +26,7 @@ import om.Voyance;
 import dao.VoyanceDAO;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import javafx.util.Pair;
 import om.Astrologue;
@@ -49,24 +50,7 @@ public class Service {
         initialisation();
         
         Saisie.pause();
-//        jpaUtil.creerEntityManager();
-//        Employe e = EmployeDAO.find(new Long(1));
-//        Client c = ClientDAO.getClientByIdentifiant("Jo");
-//        System.out.println("emp e : "+e);
-//        jpaUtil.fermerEntityManager();
-//        
-//        List<Voyance> voy = getAllVoyance(e);
-//        System.out.println("voyance voy : " + voy);
-//        
-//        List<Voyance> list = getHistorique(c);
-//        System.out.println(list);
-//        ArrayList<Medium.Talent> l = new ArrayList<>();
-//        l.add(Medium.Talent.Voyant);
-//        List<Medium> listM = rechercheMediums(l);
-//        System.out.println(listM);
-//        demanderVoyance(c, listM.get(0));
-//        accepterVoyance(list.get(0));
-//        System.out.println(getHistorique(c));
+
 //        jpaUtil.creerEntityManager();
 //        Employe e = EmployeDAO.find(new Long(1));
 //        Client c = ClientDAO.getClientByIdentifiant("Jo");
@@ -89,8 +73,27 @@ public class Service {
 //        Employe e = EmployeDAO.find(new Long(2));
 //        System.out.println(e);
 //        jpaUtil.fermerEntityManager();
+//        
+//        List<Voyance> voy = getVoyance(e);
+//        System.out.println("voyance voy : " + voy);
+//        
+//        List<Voyance> list = getHistorique(c);
+//        System.out.println(list);
+//        ArrayList<Medium.Talent> l = new ArrayList<>();
+//        l.add(Medium.Talent.Voyant);
+//        List<Medium> listM = rechercheMediums(l);
+//        System.out.println(listM);
+//        demanderVoyance(c, listM.get(0));
+//        accepterVoyance(list.get(0));
+//        System.out.println(getHistorique(c));
+//        jpaUtil.creerEntityManager();
+//        Employe e = EmployeDAO.find(new Long(2));
+//        System.out.println(e);
+//        jpaUtil.fermerEntityManager();
 //        getStats();
 //        
+//        getStats();
+        
 //        List<Voyance> voy = getAllVoyance(e);
 //        System.out.println("voyance voy : " + voy);
     }
@@ -103,11 +106,20 @@ public class Service {
         Tarologue t1 = new Tarologue("Nil'Erg","Duom",Tarologue.Cartes.Marseille,"Ecoute les cartes avec sagesse");
         Tarologue t2 = new Tarologue("Le Chanteur","Merlin",Tarologue.Cartes.Broceliande,"Autodidacte surprenant, il a un vrai don pour le tarot");
 //        Employe e0 = new Employe();
-        Employe e1 = new Employe("Doe","Jonathan","jdoe1","azerty");
-        Employe e2 = new Employe("Doe","Joseph","jdoe2","azerty");
-        Employe e3 = new Employe("Doe","Jotaro","jdoe3","azerty");
-        Employe e4 = new Employe("Doe","Josuke","jdoe4","azerty");
-        Employe e5 = new Employe("Doe","Jolyne","jdoe5","azerty");
+        Collection<Medium> col = new ArrayList<Medium>();
+        col.add(a1);
+        col.add(v1);
+        col.add(v2);
+        col.add(v3);
+        col.add(a2);
+        col.add(t1);
+        col.add(t2);
+        
+        Employe e1 = new Employe("Doe","Jonathan","jdoe1","azerty",col);
+        Employe e2 = new Employe("Doe","Joseph","jdoe2","azerty",col);
+        Employe e3 = new Employe("Doe","Jotaro","jdoe3","azerty",col);
+        Employe e4 = new Employe("Doe","Josuke","jdoe4","azerty",col);
+        Employe e5 = new Employe("Doe","Jolyne","jdoe5","azerty",col);
         
         try{
             jpaUtil.creerEntityManager();
@@ -128,10 +140,6 @@ public class Service {
             jpaUtil.validerTransaction();
             jpaUtil.ouvrirTransaction();
     //        Voyance voy1 = new Voyance(c1,v1);
-    //        VoyanceDAO.persist(voy1);
-    //        voy1.assignEmploye(e1);
-    //        jpaUtil.ouvrirTransaction(); 
-    //        Voyance voy1 = new Voyance(c1,v1);
     //        voy1.assignEmploye(e1);
     //        Voyance voy2 = new Voyance(c1,v1);
     //        voy2.assignEmploye(e1);  
@@ -143,7 +151,8 @@ public class Service {
     //        VoyanceDAO.persist(voy2);
     //        VoyanceDAO.persist(voy3);
     //        VoyanceDAO.persist(voy4);        
-    //        jpaUtil.validerTransaction();
+
+            jpaUtil.validerTransaction();
 
             jpaUtil.fermerEntityManager();
         }catch(Exception e){
@@ -219,7 +228,7 @@ public class Service {
         jpaUtil.creerEntityManager();
         jpaUtil.ouvrirTransaction();
         Voyance v = new Voyance(c, m);
-        Employe idle = EmployeDAO.getIdleEmploye();
+        Employe idle = EmployeDAO.getIdleEmploye(m);
         idle.setStatus(false);
         v.assignEmploye(idle);
         EmployeDAO.update(idle);
