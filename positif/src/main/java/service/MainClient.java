@@ -37,20 +37,7 @@ public class MainClient {
         jpaUtil.init();
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = new Date();
-        try{
-            d = sdf.parse("21/12/2012");
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-        Client c1 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mailJo", "adress", "tel", "Jo", "password");
-        Client c2 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mailJoh", "adress", "tel", "Joh", "pass");
-        Client c3 = new Client(Client.Civilite.Mr, "Doe", "John", d, "mailJohn", "adress", "tel", "John", "word");
-        
-        inscriptionClient(c1);
-        inscriptionClient(c2);
-        inscriptionClient(c3);
-        
+        Date d = new Date();        
         String in = "go";
         ArrayList<String> list = new ArrayList<String>();
         int choix = 0;

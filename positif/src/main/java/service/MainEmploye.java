@@ -49,6 +49,7 @@ public class MainEmploye {
                         case 1 :
                             while(true){
                                 System.out.println("Onglet voyance");
+                                e=Service.mergeEmploye(e);
                                 if(e.getStatus()==true){
                                     System.out.println("Pas de voyances attribuée");
                                     break;
@@ -63,7 +64,7 @@ public class MainEmploye {
                                     }
                                     System.out.println("    Medium : "+ v.getMedium());
                                     System.out.println("    Client : "+ v.getClient().getPrenom()+" "+v.getClient().getNom());
-                                    choix = Saisie.lireInteger("1 - voir profil client\r\n2 - voir historique client\r\n3 - générer prédiction\r\n 4 - changer d'onglet", Arrays.asList(1,2,3,4));
+                                    choix = Saisie.lireInteger("1 - voir profil client\r\n2 - voir historique client\r\n3 - générer prédiction\r\n4- Commencer/Terminer Voyance\r\n5 - changer d'onglet", Arrays.asList(1,2,3,4,5));
                                     switch(choix){
                                         case 1 :
                                             System.out.println(v.getClient());
@@ -83,10 +84,20 @@ public class MainEmploye {
                                             Saisie.lireInteger("Presser 1 pour retour à l'onglet voyance",Arrays.asList(1));
                                             choix=2;
                                             break;
-                                        case 4 : 
+                                        case 4 :
+                                            if(v.getStatus()==Voyance.Status.EnAttente){
+                                                Service.accepterVoyance(v);
+                                                System.out.println("Voyance acceptée, ouverture du chat");
+                                            }else{
+                                                String s = Saisie.lireChaine("entrez votre commentaire");
+                                                Service.terminerVoyance(v, s);
+                                                choix = 5;
+                                            }
+                                            break;
+                                        case 5 : 
                                             break;
                                     }
-                                    if(choix==4){
+                                    if(choix==5){
                                         break;
                                     }
                                             

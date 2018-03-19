@@ -15,7 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import static javax.persistence.TemporalType.DATE;
-import javax.persistence.Transient;
 
 
 /**
