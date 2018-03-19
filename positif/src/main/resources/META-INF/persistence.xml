@@ -9,6 +9,7 @@
     <class>om.Voyant</class>
     <class>om.Tarologue</class>
     <class>om.Astrologue</class>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/DB"/>
       <property name="javax.persistence.jdbc.user" value="B3232"/>

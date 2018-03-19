@@ -48,6 +48,7 @@ public class MainClient {
                 choix = Saisie.lireInteger("tapez 1 pour vous log in, \rtaper 2 pour vous inscrire, \rtaper 3 pour quitter", Arrays.asList(1,2,3));
                 switch(choix){
                     case 1 :
+                        list.clear();     
                         list.add(Saisie.lireChaine("id : "));
                         list.add(Saisie.lireChaine("mdp : "));
                         c = identificationClient(list.get(0),list.get(1));

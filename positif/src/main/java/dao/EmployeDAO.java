@@ -51,11 +51,18 @@ public class EmployeDAO{
         EntityManager em = jpaUtil.obtenirEntityManager();
         Query query = em.createNativeQuery("Select e.id from Employe e where not exists(select v.E_ID from Voyance v where v.E_ID = e.id)");
         List<Object> list = query.getResultList();
+        for(Object o : list){
+                Employe res = find((Long)o);
+                if(res.getMediumsPossibles().contains(m)){
+                    System.out.println(res);
+                    return res;
+                }
+            }
         System.out.println(list);
-        if(list.isEmpty()){
-            query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc fetch first 1 rows only"); 
-            list = query.getResultList();
-        }
+
+        query = em.createNativeQuery("Select v.E_ID from Voyance v group by v.E_ID order by count(*) asc"); 
+        list = query.getResultList();
+
         System.out.println(list);
         if(!list.isEmpty()){
             for(Object o : list){
